@@ -1,5 +1,7 @@
 # Despliegue en Render
 
+Servicio activo: **https://cortijo7.onrender.com**. Véase [estado y verificación](ESTADO_RENDER.md).
+
 Repositorio: https://github.com/ferhernandezdimas-beep/InventarioCortigo7. El código, Dockerfile.render y render.yaml son públicos. Los secretos, respaldos y bases nunca se incorporan a Git ni a la imagen.
 
 ## Servicios y arranque

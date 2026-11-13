@@ -2,7 +2,13 @@
 
 Entrega para **uso local** con Python 3.12, Flask, PostgreSQL 17, SQLAlchemy 2, psycopg 3, Jinja2, Bootstrap 5 y JavaScript. Incluye despliegue en Render mediante Docker, Gunicorn, Nginx y PostgreSQL 17. Consulta [despliegue y mantenimiento](docs/DESPLIEGUE.md).
 
-## Abrir el sistema
+## Acceso en línea
+
+**https://cortijo7.onrender.com** · Usa la cuenta conservada de la instalación local. La base remota es una copia independiente: los cambios locales posteriores no se sincronizan automáticamente.
+
+El servicio y PostgreSQL utilizan el plan gratuito. La base actual vence el **12/12/2026 a las 21:47 (Ciudad de México)**; respaldar y actualizar de plan o trasladar antes de esa fecha. El primer acceso puede tardar después de un periodo de inactividad.
+
+## Abrir el sistema local
 
 Con Docker Desktop abierto:
 

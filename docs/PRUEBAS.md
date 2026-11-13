@@ -37,4 +37,4 @@ No hay navegador automatizado conectado. El tamaño del login se ajustó usando 
 
 ## Preparación de Render — 12/11/2026
 
-150 pruebas aprobadas en PostgreSQL 17 con -W error. Se verificó la normalización de conexiones Render a psycopg 3 y la conservación de importes, saldos, claves idempotentes y credenciales al cambiar la presentación del catálogo, incluidos comprobantes de ventas posteriores. La imagen de producción se construyó y respondió mediante Nginx/Gunicorn en una base temporal. También se revisaron 18 vistas contra la copia remota; la publicación web requiere el acceso GitHub indicado en ESTADO_RENDER.md.
+150 pruebas aprobadas en PostgreSQL 17 con -W error. Se verificó la normalización de conexiones Render a psycopg 3 y la conservación de importes, saldos, claves idempotentes y credenciales al cambiar la presentación del catálogo, incluidos comprobantes de ventas posteriores. La imagen de producción se construyó y respondió mediante Nginx/Gunicorn en una base temporal. También se revisaron 18 vistas contra la copia remota; el despliegue público ya está activo y se verificaron 28 vistas autenticadas mediante HTTPS, conforme a ESTADO_RENDER.md.
