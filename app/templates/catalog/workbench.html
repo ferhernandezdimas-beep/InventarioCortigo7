@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% from 'components/macros.html' import field, empty, icon %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="page-heading"><div><span class="eyebrow">CATÁLOGOS DEL ALMACÉN</span><h1>{{ title }}</h1><p>{{ description }}</p></div><span class="subtle-tag">{{ rows|length }} REGISTROS</span></div>
+<div class="catalog-layout">
+  <section class="panel form-panel">
+    <div class="compact-form-title"><span class="eyebrow">{{ 'ACTUALIZAR REGISTRO' if editing else 'AGREGAR AL CATÁLOGO' }}</span><h2>{{ 'Editar' if editing else 'Nueva' }} {{ 'categoría' if kind == 'categories' else 'presentación' }}</h2></div>
+    {% if ready %}
+    <form method="post" data-submit-form>{{ form.hidden_tag() }}<div class="form-grid">{% for f in form %}{{ field(f) }}{% endfor %}</div><div class="form-actions">{% if editing %}<a class="btn btn-light" href="{{ list_url }}">Cancelar</a>{% endif %}<button type="submit" class="btn btn-primary">{{ icon('plus',16) }} {{ 'Guardar cambios' if editing else 'Agregar al catálogo' }}</button></div></form>
+    {% else %}<div class="setup-notice"><div><h2>Primero registra un ingrediente</h2><p>La presentación necesita un ingrediente y su unidad base.</p><a class="btn btn-primary" href="{{ url_for('catalog.ingredient_form') }}">Crear ingrediente {{ icon('arrow',16) }}</a></div></div>{% endif %}
+    <div class="catalog-helper">{% if kind == 'categories' %}<strong>Organiza por familias.</strong><br>Por ejemplo: verduras, proteínas, lácteos o abarrotes. Elige los nombres que use tu cocina.{% else %}<strong>Una equivalencia explícita.</strong><br>Si el aceite se controla en ml, una botella de 1 L contiene 1,000 unidades base. El ingrediente seleccionado debe corresponder al empaque.{% endif %}</div>
+  </section>
+  <section class="panel">
+    <div class="panel-heading"><h2>{{ 'Categorías registradas' if kind == 'categories' else 'Presentaciones registradas' }}</h2><span class="catalog-count">{{ rows|length }} en el catálogo</span></div>
+    {% if rows %}<div class="table-responsive"><table class="table"><thead><tr>{% for header in headers %}<th>{{ header }}</th>{% endfor %}<th></th></tr></thead><tbody>{% for row in rows %}<tr>{% for value in row %}<td>{{ value|quantity if value is number else value }}</td>{% endfor %}<td class="number"><a class="text-link" href="{{ edit_links[loop.index0] }}">Editar {{ icon('chevron',14) }}</a></td></tr>{% endfor %}</tbody></table></div>
+    {% else %}{{ empty('Todo listo para organizar tu catálogo', 'Agrega el primer registro desde el formulario de esta página. Tus datos se guardarán en el catálogo.', 'tag' if kind == 'categories' else 'box') }}{% endif %}
+  </section>
+</div>
+{% endblock %}

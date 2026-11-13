@@ -1,0 +1,12 @@
+FROM python:3.12-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+RUN apt-get update && apt-get install -y --no-install-recommends nginx \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd --create-home --uid 10001 cortijo
+WORKDIR /srv/cortijo7
+COPY requirements.lock ./
+RUN pip install --no-cache-dir -r requirements.lock
+COPY --chown=cortijo:cortijo . .
+USER cortijo
+EXPOSE 10000
+CMD ["python", "scripts/start_render.py"]

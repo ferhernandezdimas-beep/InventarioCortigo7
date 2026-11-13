@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% from 'components/macros.html' import field,icon %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="page-heading"><div><span class="eyebrow">{{ eyebrow }}</span><h1>{{ title }}</h1><p>{{ description }}</p></div></div>
+{% set missing_category = form.category_id is defined and not form.category_id.choices %}
+{% if missing_category %}<div class="setup-notice">{{ icon('tag',25) }}<div><h2>Primero crea una categoría</h2><p>El ingrediente necesita una clasificación. Registra una categoría y después vuelve a este formulario.</p><a class="btn btn-primary" href="{{ url_for('catalog.categories') }}">Crear categoría {{ icon('arrow',16) }}</a></div></div>{% endif %}
+<section class="panel form-panel"><div class="form-section-heading"><span class="section-number">01</span><div><h2>Datos de registro</h2><p>Los campos opcionales están identificados.</p></div></div><form method="post" data-submit-form>{{ form.hidden_tag() }}<div class="form-grid">{% for f in form %}{{ field(f) }}{% endfor %}</div><div class="form-actions"><a href="{{ url_for('dashboard.index') }}" class="btn btn-light">Volver al inicio</a><button type="submit" class="btn btn-primary" {{ 'disabled' if missing_category else '' }}>{{ icon('shield',17) }} Guardar y confirmar</button></div></form></section>
+{% endblock %}

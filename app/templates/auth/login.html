@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% from 'components/macros.html' import field, icon %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+<main class="login-layout">
+<section class="login-story"><span class="overline">SAN JUAN DEL RÍO · QUERÉTARO</span><a class="login-brand" href="{{ url_for('auth.login') }}">CORTIJO <em>7</em></a><div class="story-content"><span class="ornament">C7</span><h1>El cuidado comienza<br>en cada ingrediente.</h1><p>Una operación en orden.<br>Más espacio para lo que nos reúne.</p><div class="story-rule"></div><span class="overline">SISTEMA DE GESTIÓN INTEGRAL</span></div><span class="login-location">Restaurante Cortijo 7 · México</span></section>
+<section class="login-form-section"><div class="login-form-wrap"><span class="eyebrow">BIENVENIDO A CORTIJO 7</span><h2>Todo en su lugar.</h2><p class="lead-copy">Ingresa a tu espacio de trabajo para continuar con la operación del restaurante.</p>
+{% with messages = get_flashed_messages(with_categories=true) %}{% for category,message in messages %}<div class="alert alert-{{ category if category in ['danger','warning','success','info'] else 'info' }}" role="alert">{{ message }}</div>{% endfor %}{% endwith %}
+{% if throttle %}<div class="alert alert-warning" role="alert">Demasiados intentos. Espera 15 minutos e intenta nuevamente.</div>{% endif %}
+<form method="post" class="login-form" data-submit-form>{{ form.hidden_tag() }}{{ field(form.email) }}<div class="password-control">{{ field(form.password) }}<button type="button" id="toggle-password" class="password-toggle" aria-controls="password" aria-pressed="false">Mostrar</button></div><button class="btn btn-primary w-100" type="submit">Iniciar sesión {{ icon('arrow',21) }}</button></form><p class="login-help">¿Necesitas acceso? Solicita una cuenta al administrador del restaurante.</p><div class="secure-caption">{{ icon('shield',19) }} Acceso seguro para personal autorizado</div></div><span class="login-copyright">CORTIJO 7 · CONTROL Y TRAZABILIDAD</span></section>
+</main>
+{% endblock %}
