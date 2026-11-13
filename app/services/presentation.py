@@ -25,11 +25,39 @@ from app.services.numbers import DomainError
 PRESENTED = "dataset.presentation.v1"
 
 
+def _snapshot_names(session, item_ids):
+    changed = 0
+    for line in session.scalars(select(SaleItem).where(SaleItem.menu_item_id.in_(item_ids))):
+        name = line.name.removesuffix(SUFFIX)
+        changed += name != line.name
+        line.name = name
+        for snapshot in line.ingredients:
+            name = snapshot.name.removesuffix(SUFFIX)
+            changed += name != snapshot.name
+            snapshot.name = name
+    return changed
+
+
 def normalize_presentation():
     def command(session):
         session.execute(text("SELECT pg_advisory_xact_lock(7003001)"))
         previous = session.scalar(select(AuditLog).where(AuditLog.action == PRESENTED))
         if previous:
+            item_ids = list(
+                session.scalars(
+                    select(MenuItem.id).where(
+                        MenuItem.code.in_([f"PLT-{row[0].upper()}" for row in MENU])
+                    )
+                )
+            )
+            if _snapshot_names(session, item_ids):
+                session.add(
+                    AuditLog(
+                        user_id=previous.user_id,
+                        action="dataset.snapshot_names.v1",
+                        detail="Nombres de productos actualizados en comprobantes; importes conservados",
+                    )
+                )
             return dict(json.loads(previous.detail), already_applied=True)
         completed = session.scalar(select(AuditLog).where(AuditLog.action == COMPLETE))
         started = session.scalar(select(AuditLog).where(AuditLog.action == START))
@@ -156,10 +184,7 @@ def normalize_presentation():
             if lot.code and lot.code.startswith("DEMO-"):
                 lot.code = "LT-" + lot.code.removeprefix("DEMO-")
         sale_ids = list(session.scalars(select(Sale.id).where(Sale.operation_id.in_(op_ids))))
-        for line in session.scalars(select(SaleItem).where(SaleItem.sale_id.in_(sale_ids))):
-            line.name = line.name.removesuffix(SUFFIX)
-            for snapshot in line.ingredients:
-                snapshot.name = snapshot.name.removesuffix(SUFFIX)
+        _snapshot_names(session, item_ids)
         for cancellation in session.scalars(
             select(SaleCancellation).where(SaleCancellation.sale_id.in_(sale_ids))
         ):

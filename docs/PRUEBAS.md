@@ -34,3 +34,7 @@ Se restauró el respaldo de la instalación en una base nueva y se aplicó d4571
 ## Límites de verificación
 
 No hay navegador automatizado conectado. El tamaño del login se ajustó usando la captura recibida; las vistas se verificaron mediante Flask/HTTP, sin afirmar que se haya realizado inspección visual en escritorio/tablet/móvil. La aceptación visual, impresión en el equipo de destino y el mapeo del Excel original deben revisarse con esos recursos reales. No se probaron integraciones bancarias, fiscales, de impresoras térmicas ni despliegue remoto porque no forman parte de esta entrega local.
+
+## Preparación de Render — 12/11/2026
+
+150 pruebas aprobadas en PostgreSQL 17 con -W error. Se verificó la normalización de conexiones Render a psycopg 3 y la conservación de importes, saldos, claves idempotentes y credenciales al cambiar la presentación del catálogo, incluidos comprobantes de ventas posteriores. La imagen de producción se construyó y respondió mediante Nginx/Gunicorn en una base temporal. También se revisaron 18 vistas contra la copia remota; la publicación web requiere el acceso GitHub indicado en ESTADO_RENDER.md.

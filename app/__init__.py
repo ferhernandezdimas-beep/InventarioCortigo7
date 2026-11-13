@@ -84,6 +84,7 @@ def create_app(overrides=None):
                 "demo.v1.started": "Carga inicial iniciada",
                 "demo.v1.completed": "Carga inicial completada",
                 "dataset.presentation.v1": "Actualización de presentación del catálogo",
+                "dataset.snapshot_names.v1": "Actualización de nombres en comprobantes",
             },
             operation_labels={
                 "receipt": "Entrada",

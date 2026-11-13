@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime, timezone
 from decimal import Decimal
 
@@ -14,6 +15,7 @@ from app.services.presentation import normalize_presentation
 from app.services.queries import inventory_query
 from app.services.receipts import validated_form
 from app.services.reconciliation import inventory_issues
+from app.services.sales import confirm_sale
 from tests.integration.test_web import login
 
 pytestmark = pytest.mark.postgres
@@ -101,6 +103,12 @@ def test_scenario_preserves_real_data_and_replays_without_duplicates(app, seeded
         replay = demo.seed_demo(user_id=actor.id)
         assert replay["already_loaded"]
         assert counts() == before
+        additional_sale = confirm_sale(
+            key=uuid.uuid4(),
+            user_id=actor.id,
+            lines=[dict(menu_item_id=sample_item, quantity=1)],
+            method="card",
+        )
         financial = list(
             db.session.execute(
                 select(Movement.id, Movement.quantity, Movement.cost).order_by(Movement.id)
@@ -179,6 +187,7 @@ def test_scenario_preserves_real_data_and_replays_without_duplicates(app, seeded
         "/ventas/punto-de-venta",
         "/ventas/",
         f"/ventas/{sample_sale}",
+        f"/ventas/{additional_sale}",
         "/reportes/",
         *[
             f"/reportes/almacen?kind={kind}"
