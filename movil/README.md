@@ -1,6 +1,6 @@
 # Cortijo 7 · Aplicación móvil
 
-Aplicación nativa Android/iOS con **Expo SDK 58, React Native, TypeScript y SQLite local**. La fuente oficial de usuarios, permisos y operaciones sigue siendo **Flask + PostgreSQL 17 en Render**. SQLite solo almacena la copia del teléfono y su cola; no sustituye PostgreSQL ni sus pruebas de concurrencia.
+Aplicación nativa Android/iOS con **Expo SDK 57, React Native, Expo Router, TypeScript y SQLite local**. La fuente oficial de usuarios, permisos y operaciones sigue siendo **Flask + PostgreSQL 17 en Render**. SQLite solo almacena la copia del teléfono y su cola; no sustituye PostgreSQL ni sus pruebas de concurrencia.
 
 ## Ubicación y estado
 
@@ -8,11 +8,11 @@ Aplicación nativa Android/iOS con **Expo SDK 58, React Native, TypeScript y SQL
 - `app/mobile.py`: API `/api/mobile/v1`; `app/mobile_models.py`: sesiones por dispositivo.
 - `migrations/versions/e81501c7a001_mobile_device_sessions.py`: migración aditiva; conserva cuentas y movimientos anteriores.
 - Servidor configurado: `https://cortijo7.onrender.com`.
-- La primera versión móvil necesita publicar esa API en Render. La creación de un APK en EAS requiere autorizar el proyecto y la cuenta de Expo. Consulta el estado real en `docs/APLICACION_MOVIL.md`; configurar la URL no significa que la API ya esté desplegada.
+- La API móvil ya está publicada en Render. El APK final y la evidencia de comprobaciones se registran en `../docs/APLICACION_MOVIL.md`. La creación de proyectos y compilación en Expo fue autorizada para la cuenta `fernando-hd`.
 
 ## Ejecutar en Expo Go
 
-Requisitos: Node 24 LTS, npm, Expo Go compatible con SDK 58 y teléfono/computadora en la misma red.
+Requisitos: Node 24 LTS, npm, Expo Go compatible con SDK 57 y teléfono/computadora en la misma red.
 
 ```sh
 cd movil
@@ -20,7 +20,7 @@ npm ci
 npm start
 ```
 
-Escanea el QR de Metro con Expo Go en Android o la cámara en iPhone. En macOS también puedes abrir **Iniciar Cortijo 7 móvil.command** desde la carpeta principal. Si tu Expo Go indica incompatibilidad, instala la versión correspondiente desde https://expo.dev/go o usa una compilación propia. Este proyecto usa SDK 58; no comparte dependencias con las aplicaciones anteriores de este equipo que usan SDK 54.
+Escanea el QR de Metro con Expo Go en Android o la cámara en iPhone. En macOS también puedes abrir **Iniciar Cortijo 7 móvil.command** desde la carpeta principal. Si tu Expo Go indica incompatibilidad, instala la versión correspondiente desde https://expo.dev/go o usa una compilación propia. Este proyecto usa SDK 57; no comparte dependencias con las aplicaciones anteriores de este equipo que usan SDK 54.
 
 `npm run start:tunnel` es una alternativa si la red bloquea la conexión directa; requiere el túnel de desarrollo de Expo. No es necesario para la aplicación instalada.
 

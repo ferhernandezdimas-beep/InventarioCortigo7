@@ -12,7 +12,6 @@ output.mkdir(exist_ok=True)
 archive = output / "cortijo7-movil-fuentes.zip"
 names = [
     "App.tsx",
-    "index.ts",
     "package.json",
     "package-lock.json",
     "app.json",
@@ -21,14 +20,19 @@ names = [
     ".env.example",
     ".easignore",
     ".nvmrc",
+    ".npmrc",
     "README.md",
 ]
 files = [source / n for n in names]
-for directory in ["src", "tests", "assets"]:
+for directory in ["src", "tests", "assets", "vendor"]:
     files.extend(
         p
         for p in (source / directory).rglob("*")
-        if p.is_file() and p.suffix in {".ts", ".tsx", ".png", ".json"}
+        if p.is_file()
+        and (
+            p.suffix in {".ts", ".tsx", ".png", ".json", ".cjs", ".mjs", ".md"}
+            or p.name == "LICENSE"
+        )
     )
 with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
     for path in sorted(files):

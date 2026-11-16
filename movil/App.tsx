@@ -1,22 +1,20 @@
-import React, { useState } from "react";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { AppProvider, useApp } from "./src/context";
+import React from "react";
+import { usePathname } from "expo-router";
+import { navigate } from "./src/navigation";
 import {
-  Account,
-  Assistant,
-  Home,
-  Inventory,
-  Login,
-  POS,
-  SyncScreen,
-  type Route,
-} from "./src/screens";
-import { Entry } from "./src/entry";
+  ActivityIndicator,
+  Pressable,
+  Text,
+  View,
+  Platform,
+} from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useApp } from "./src/context";
+import { Login, type Route } from "./src/screens";
 import { Button, C, Icon, type IconName, Note, s } from "./src/ui";
 
-class ErrorBoundary extends React.Component<
+export class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { failed: boolean }
 > {
@@ -42,9 +40,11 @@ class ErrorBoundary extends React.Component<
     return this.props.children;
   }
 }
-function Application() {
-  const app = useApp(),
-    [route, setRoute] = useState<Route>("home");
+export function Frame({ children }: { children: React.ReactNode }) {
+  const app = useApp();
+  const pathname = usePathname();
+  const route = (pathname === "/" ? "home" : pathname.slice(1)) as Route;
+  const setRoute = navigate;
   if (!app.ready)
     return (
       <View
@@ -60,7 +60,7 @@ function Application() {
           style={{
             color: C.gold,
             fontSize: 38,
-            fontFamily: "serif",
+            fontFamily: Platform.OS === "ios" ? "Georgia" : "serif",
             letterSpacing: 3,
           }}
         >
@@ -117,7 +117,7 @@ function Application() {
         : ["receipt", "issue"].includes(route)
           ? permissions.includes("inventory.write")
           : true;
-  const current = allowed ? route : "home",
+  const current = route,
     pending = app.queue.filter((i) => i.status !== "confirmed").length;
   return (
     <SafeAreaView style={s.screen} edges={["top", "left", "right"]}>
@@ -139,7 +139,7 @@ function Application() {
           >
             <Text
               style={{
-                fontFamily: "serif",
+                fontFamily: Platform.OS === "ios" ? "Georgia" : "serif",
                 fontSize: 25,
                 letterSpacing: 2,
                 color: C.green,
@@ -208,20 +208,13 @@ function Application() {
         </Pressable>
       )}
       <View style={{ flex: 1 }}>
-        {current === "home" ? (
-          <Home go={setRoute} />
-        ) : current === "inventory" ? (
-          <Inventory go={setRoute} />
-        ) : current === "pos" ? (
-          <POS go={setRoute} />
-        ) : current === "assistant" ? (
-          <Assistant go={setRoute} />
-        ) : current === "sync" ? (
-          <SyncScreen />
-        ) : current === "receipt" || current === "issue" ? (
-          <Entry key={current} kind={current} go={setRoute} />
+        {allowed ? (
+          children
         ) : (
-          <Account />
+          <View style={s.content}>
+            <Note warning>Tu cuenta no tiene acceso a esta sección.</Note>
+            <Button title="Volver al inicio" onPress={() => setRoute("home")} />
+          </View>
         )}
       </View>
       <SafeAreaView
@@ -298,14 +291,4 @@ function Application() {
     </SafeAreaView>
   );
 }
-export default function App() {
-  return (
-    <SafeAreaProvider>
-      <ErrorBoundary>
-        <AppProvider>
-          <Application />
-        </AppProvider>
-      </ErrorBoundary>
-    </SafeAreaProvider>
-  );
-}
+export default Frame;

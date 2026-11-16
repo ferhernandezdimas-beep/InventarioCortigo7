@@ -31,17 +31,19 @@
           "backgroundColor": "#173D35"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-router"
     ],
     "experiments": {
       "reactCompiler": false
     },
     "extra": {
-      "description": "Inventario y ventas con sincronización segura y asistente local",
+      "description": "Inventario y ventas con sincronizaci\u00f3n segura y asistente local",
       "eas": {
         "projectId": "d1d58bfa-8a74-4dfb-b9cb-c004d13ba89a"
       }
     },
-    "owner": "fernando-hd"
+    "owner": "fernando-hd",
+    "platforms": ["android", "ios"]
   }
 }

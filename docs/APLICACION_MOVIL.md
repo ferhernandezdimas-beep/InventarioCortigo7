@@ -2,7 +2,7 @@
 
 ## Entregables locales
 
-- Proyecto separado `movil/` dentro del proyecto existente: Expo SDK 58, React Native 0.88, React 19.3, TypeScript, Expo SQLite, SecureStore, Network, Crypto, Haptics y Decimal.js.
+- Proyecto separado `movil/` dentro del proyecto existente: Expo SDK 57, React Native y React compatibles con SDK 57, TypeScript, Expo SQLite, SecureStore, Network, Crypto, Haptics y Decimal.js.
 - API Flask `/api/mobile/v1` sobre la misma base PostgreSQL 17. No se copian ni recrean usuarios para móvil.
 - Nueva tabla `mobile_sessions` mediante Alembic `e81501c7a001`, posterior a `d457194c1424`; cambio aditivo sin modificar tablas históricas.
 - La web conserva sus rutas y formularios. Se añade `/mi-cuenta/dispositivos` para consultar/revocar accesos; mantiene CSRF. Los administradores pueden gestionar los dispositivos de todos.
@@ -38,7 +38,7 @@ La administración completa de catálogos, recetas y usuarios, importaciones, ca
 
 ## Instalación y distribución
 
-Usar Node 24 LTS y `npm ci` dentro de `movil`. `npm start` muestra el QR de Expo Go. El teléfono debe tener Expo Go compatible con SDK 58; las otras apps anteriores del equipo utilizan SDK 54 y no comparten `node_modules` con este proyecto.
+Usar Node 24 LTS y `npm ci` dentro de `movil`. `npm start` muestra el QR de Expo Go. El teléfono debe tener Expo Go compatible con SDK 57; las otras apps anteriores del equipo utilizan SDK 54 y no comparten `node_modules` con este proyecto.
 
 `preview` de EAS está configurado para APK Android, `production` para AAB. Para iPhone se necesita firma/distribución Apple; no hay un APK para iOS. No se contrató ningún plan de pago.
 
@@ -57,3 +57,15 @@ La base gratuita de Render existente conserva su vencimiento documentado del 12/
 Se registran los resultados finales de pruebas al completar este avance. Los comandos son `npm run typecheck`, `npm test`, `npx expo-doctor` y `npm run export:android`; la regresión Python se ejecuta sobre PostgreSQL 17 real. No se utiliza SQLite para simular concurrencia de servidor.
 
 No hay emulador Android/iOS disponible en este equipo para certificar la interacción nativa. La compilación del bundle, TypeScript y las pruebas del protocolo no equivalen a probar un APK instalado. Antes de operación se debe revisar en un teléfono: primer acceso real, modo avión, captura, cierre/reapertura, reconexión, recuperación de folio en la web, conflicto de dos dispositivos, cambio de receta y revocación del acceso. La publicación de la API y un APK firmado siguen los pasos pendientes indicados arriba.
+
+### Evidencia de publicación del backend
+
+- Commit de aplicación: `0a1c130c4fa1a16d5b5e388ecb209f03fe74e2a7`.
+- Despliegue: `dep-dbt8b7u1egvs73fnecig`, estado **live** confirmado por Render.
+- HTTPS: `/health/ready` y `/login` respondieron 200. La salud verifica PostgreSQL 17 y la revisión actual de Alembic, incluida la nueva tabla de sesiones móviles.
+- `/api/mobile/v1/auth/me` y `/snapshot` respondieron 401 sin token; `/auth/login` rechazó el objeto vacío con 400 JSON.
+- 174 pruebas Python aprobadas en PostgreSQL 17 local aislado. No se inició sesión con credenciales reales del usuario durante la comprobación pública ni se crearon movimientos operativos para probar.
+- No se exportaron datos ni se modificó la allowlist de PostgreSQL. El autodespliegue sigue deshabilitado.
+- La versión móvil final usa SDK 57, recomendado por Expo para Expo Go físico durante la transición a SDK 58, y rutas en `movil/src/app/` con Expo Router. La primera compilación SDK 58 fue preliminar; no es la distribución final.
+
+La dependencia de navegación utiliza la versión corregida oficial `decode-uri-component@0.5.1`, convertida a CommonJS conservando licencia y fuente en `movil/vendor/` para la interfaz de query-string 7 que utiliza Expo Router 57. Se probaron UTF-8, cantidades decimales y entradas malformadas. También se fija minimatch corregido para las herramientas de fingerprint. No se cambió la versión nativa de Expo para resolver esos avisos.
