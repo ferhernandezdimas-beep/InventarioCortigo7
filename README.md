@@ -74,3 +74,11 @@ La integración/concurrencia se ejecuta en **PostgreSQL 17 real**, en esquemas t
 - [Decisiones pendientes](docs/DECISIONES_PENDIENTES.md), [historial inicial](docs/AVANCES.md) y [ampliación anterior](docs/AVANCE_OPERATIVO.md).
 
 La aceptación visual en navegador y la validación del Excel original requieren revisión en el equipo y con los archivos reales. El alcance local no incluye integración bancaria, CFDI, múltiples cajas/sucursales, mesas, impresoras térmicas específicas ni sincronización desconectada.
+
+## Aplicación móvil Expo
+
+La carpeta [`movil/`](movil/README.md) contiene la app Android/iOS de Cortijo 7 con los mismos usuarios de la web, inventario, recepciones, salidas, POS, cola de operaciones y el asistente local C7. Iniciar con `cd movil && npm ci && npm start` o abrir `Iniciar Cortijo 7 móvil.command` en macOS.
+
+El backend incorpora la API `/api/mobile/v1` y una migración aditiva para sesiones revocables por dispositivo. El primer acceso requiere internet; después se puede consultar y capturar offline. Las operaciones se confirman en PostgreSQL al sincronizar, aplicando PEPS, permisos e idempotencia. SQLite se utiliza únicamente como caché y cola del teléfono.
+
+Para iniciar de forma independiente sin Metro se necesita una compilación instalada (APK en Android); Expo Go es un entorno de desarrollo. La cuenta Expo, la compilación remota y la actualización de Render se documentan por separado; véase [`docs/APLICACION_MOVIL.md`](docs/APLICACION_MOVIL.md) para el estado de esta entrega y [`movil/README.md`](movil/README.md) para instalación y límites de sincronización.

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Dispositivos móviles{% endblock %}
+{% block content %}
+<div class="page-heading"><div><span class="eyebrow">WEB Y MÓVIL CONECTADOS</span><h1>Dispositivos móviles</h1><p>Revisa y revoca los accesos de la app. Una revocación se aplica cuando el dispositivo vuelve a conectar; el acceso local vence como máximo en siete días.</p></div></div>
+<section class="panel"><div class="table-responsive"><table class="table"><thead><tr><th>Dispositivo</th><th>Usuario</th><th>Inicio</th><th>Vencimiento</th><th>Estado</th><th></th></tr></thead><tbody>
+{% for device,name in items %}<tr><td>{{ device.device_name }}</td><td>{{ name }}</td><td>{{ device.created_at|localtime }}</td><td>{{ device.expires_at|localtime }}</td><td>{{ 'Revocado' if device.revoked_at else ('Vencido' if device.expires_at <= utcnow else 'Vigente') }}</td><td>{% if not device.revoked_at and device.expires_at > utcnow %}<form method="post">{{ form.hidden_tag() }}<input type="hidden" name="device" value="{{ device.token_hash }}"><button class="btn btn-outline-secondary" type="submit">Revocar acceso</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="6">Los dispositivos aparecerán después del primer acceso desde la app.</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}

@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "Cortijo 7",
+    "slug": "cortijo7-movil",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "cortijo7",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "mx.cortijo7.inventario"
+    },
+    "android": {
+      "package": "mx.cortijo7.inventario",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#173D35"
+      },
+      "permissions": []
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-sqlite",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 180,
+          "resizeMode": "contain",
+          "backgroundColor": "#173D35"
+        }
+      ],
+      "expo-font"
+    ],
+    "experiments": {
+      "reactCompiler": false
+    },
+    "extra": {
+      "description": "Inventario y ventas con sincronización segura y asistente local",
+      "eas": {
+        "projectId": "d1d58bfa-8a74-4dfb-b9cb-c004d13ba89a"
+      }
+    },
+    "owner": "fernando-hd"
+  }
+}

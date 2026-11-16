@@ -107,3 +107,42 @@ def password():
         eyebrow="SEGURIDAD",
         description="Actualiza tu contraseña de acceso.",
     )
+
+
+@bp.route("/mi-cuenta/dispositivos", methods=["GET", "POST"])
+@login_required
+def devices():
+    from app.forms import SpanishForm
+    from app.mobile_models import MobileSession
+    from app.permissions import can
+
+    form = SpanishForm()
+    if form.validate_on_submit():
+        digest = request.form.get("device", "")
+        device = db.session.get(MobileSession, digest) if len(digest) == 64 else None
+        if not device or (device.user_id != current_user.id and not can("users")):
+            from flask import abort
+
+            abort(404)
+        device.revoked_at = utcnow()
+        db.session.add(
+            AuditLog(
+                user_id=current_user.id,
+                action="mobile.auth.revoke",
+                detail=f"Dispositivo de usuario {device.user_id}",
+            )
+        )
+        db.session.commit()
+        flash("Acceso del dispositivo revocado. Se aplicará al volver a conectar.", "success")
+        return redirect(url_for("auth.devices"))
+    statement = (
+        select(MobileSession, User.name)
+        .join(User, User.id == MobileSession.user_id)
+        .order_by(MobileSession.created_at.desc())
+        .limit(100)
+    )
+    if not can("users"):
+        statement = statement.where(MobileSession.user_id == current_user.id)
+    return render_template(
+        "auth/devices.html", items=db.session.execute(statement).all(), form=form, utcnow=utcnow()
+    )

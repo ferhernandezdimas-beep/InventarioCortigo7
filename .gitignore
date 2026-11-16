@@ -16,3 +16,12 @@ instance/
 test-results/
 
 entrega/
+
+# Mobile source is tracked; generated native builds and dependencies are not.
+node_modules/
+.expo/
+movil/dist*/
+movil/android/
+movil/ios/
+*.apk
+*.aab

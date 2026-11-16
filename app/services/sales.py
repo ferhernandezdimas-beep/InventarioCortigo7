@@ -41,7 +41,9 @@ def quote_cart(session, lines):
     return dict(rows=rows, total=pesos(sum((row["subtotal"] for row in rows), Decimal("0"))))
 
 
-def confirm_sale(*, key, user_id, lines, method, received=None, expected_total=None):
+def confirm_sale(
+    *, key, user_id, lines, method, received=None, expected_total=None, expected_recipes=None
+):
     quantities = cart_lines(lines)
     if method not in {"cash", "card", "transfer"}:
         raise DomainError("Selecciona un método de pago válido.")
@@ -53,6 +55,8 @@ def confirm_sale(*, key, user_id, lines, method, received=None, expected_total=N
         received=received,
         expected_total=expected_total,
     )
+    if expected_recipes is not None:
+        payload["expected_recipes"] = expected_recipes
 
     def command(session):
         _authorize(session, user_id, "sales.write")
@@ -89,6 +93,13 @@ def confirm_sale(*, key, user_id, lines, method, received=None, expected_total=N
             recipe = latest_recipe(session, item.id)
             if recipe is None or not recipe.lines:
                 raise DomainError(f"{item.name} necesita una receta antes de venderse.")
+            if (
+                expected_recipes is not None
+                and expected_recipes.get(str(item.id)) != recipe.version
+            ):
+                raise DomainError(
+                    f"La receta de {item.name} cambió. Actualiza el catálogo y revisa la venta pendiente."
+                )
             sale_item = SaleItem(
                 sale_id=sale.id,
                 menu_item_id=item.id,
