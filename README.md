@@ -52,7 +52,7 @@ Recuperación administrativa de una contraseña, con solicitud privada de valore
 docker compose exec web flask --app wsgi reset-password
 ```
 
-**Verificación de entrega:** 150 pruebas de regresión sobre PostgreSQL 17 real, incluida la carga repetible y la presentación del catálogo. Véase [registro de verificación](docs/VERIFICACION_ENTREGA.md).
+**Verificación de entrega:** 174 pruebas del backend sobre PostgreSQL 17 real y 11 pruebas móviles, además de tipado, formato, instalación limpia y verificación de Expo. Véase [registro de verificación](docs/VERIFICACION_ENTREGA.md).
 
 ## Desarrollo y pruebas
 

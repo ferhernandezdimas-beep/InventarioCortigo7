@@ -22,6 +22,8 @@ names = [
     ".nvmrc",
     ".npmrc",
     "README.md",
+    "LICENSE",
+    "AGENTS.md",
 ]
 files = [source / n for n in names]
 for directory in ["src", "tests", "assets", "vendor"]:

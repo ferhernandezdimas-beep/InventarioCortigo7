@@ -27,3 +27,10 @@ La restauración y comprobación usaron acceso externo temporal limitado a una I
 El autodespliegue está deshabilitado. Para publicar cambios: probar y respaldar → push revisado a main → Manual Deploy → comprobar salud, sesiones, flujos y conciliación. Los commits posteriores que solo actualizan documentación no modifican el código del despliegue comprobado.
 
 El servicio gratuito puede suspenderse por inactividad. La base creada vence el **12/12/2026 a las 21:47, hora de Ciudad de México**. Debe respaldarse y actualizarse de plan o trasladarse antes del vencimiento. No se ha contratado ningún plan de pago.
+
+
+## Actualización de API móvil — 16/11/2026
+
+La API `/api/mobile/v1` ya está publicada en el servicio existente. Despliegue `dep-dbt8b7u1egvs73fnecig`, commit de backend `0a1c130c4fa1a16d5b5e388ecb209f03fe74e2a7`, estado live. La salud PostgreSQL/Alembic y el login web respondieron 200; las rutas móviles exigen bearer token y conservan usuarios/roles de la web. La revisión aditiva `e81501c7a001` añade únicamente sesiones revocables por dispositivo. Desde la web se gestionan en `/mi-cuenta/dispositivos`.
+
+El usuario eligió preparar esta actualización sin exportar los datos remotos. No se generó un respaldo remoto, no se abrió acceso externo de PostgreSQL y no se recreó ninguna base. El plan sigue gratuito y el autodespliegue deshabilitado. Los commits posteriores de código móvil/documentación no requieren volver a desplegar el backend; se registran en APLICACION_MOVIL.md.

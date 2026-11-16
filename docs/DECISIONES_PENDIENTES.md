@@ -13,6 +13,6 @@ Por confirmar antes de operación real:
 7. Archivo XLSX original, encabezados reales, equivalencias comerciales y política de reimportación. Las fotografías no acreditan fórmulas ni cantidades completas.
 8. Dominio, HTTPS, infraestructura, retención/cifrado de respaldos, responsable de recuperación y objetivos de recuperación.
 9. Revisión del diseño en navegador de escritorio, tablet y móvil; no hay navegador conectado en esta sesión.
-10. Trabajo sin conexión: no implementado. La interfaz avisa de fallas; no promete sincronización posterior.
+10. Trabajo sin conexión: la web continúa requiriendo internet. Desde el avance móvil del 15–16/11/2026, la app Expo permite consultar la copia local y capturar pendientes; PostgreSQL confirma las operaciones al sincronizar. Véase APLICACION_MOVIL.md.
 
 Recetas, costos históricos de venta, pagos declarados y reportes básicos están implementados. La importación y los reportes prioritarios ya están implementados; la verificación del libro original y los formatos operativos particulares requieren datos auténticos. Las políticas conservadoras de merma/conteo/cancelación se detallan en AVANCE_OPERATIVO.md y deben validarse con el restaurante antes de uso comercial. No se registran ventas o importaciones ficticias para aparentar su implementación.

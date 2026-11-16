@@ -38,3 +38,13 @@ No hay navegador automatizado conectado. El tamaño del login se ajustó usando 
 ## Preparación de Render — 12/11/2026
 
 150 pruebas aprobadas en PostgreSQL 17 con -W error. Se verificó la normalización de conexiones Render a psycopg 3 y la conservación de importes, saldos, claves idempotentes y credenciales al cambiar la presentación del catálogo, incluidos comprobantes de ventas posteriores. La imagen de producción se construyó y respondió mediante Nginx/Gunicorn en una base temporal. También se revisaron 18 vistas contra la copia remota; el despliegue público ya está activo y se verificaron 28 vistas autenticadas mediante HTTPS, conforme a ESTADO_RENDER.md.
+
+
+## Actualización móvil — 16/11/2026
+
+- **174 pruebas Python aprobadas** con PostgreSQL 17 real, incluidos 24 casos de API móvil, sesiones, permisos, CSRF web, aislamiento, idempotencia concurrente y recetas cambiadas.
+- **11 pruebas TypeScript aprobadas**: cantidades e importes exactos, caducidades offline, C7, reintentos con acuse perdido, conflictos, persistencia SQLite real al cerrar/reabrir y adaptación del parser de navegación.
+- `npm run typecheck`, `npm run lint`, `npm ci` y **21/21 comprobaciones de Expo** correctos. Bundles Android e iOS generados. Auditoría npm de la instalación final sin avisos.
+- GitHub Actions aprobado para servidor y móvil: https://github.com/ferhernandezdimas-beep/InventarioCortigo7/actions/runs/43815342652.
+- API publicada: salud y login web 200 HTTPS; rutas móviles protegidas 401 sin token y validación JSON 400 para un login vacío. No se usaron contraseñas reales ni se crearon movimientos en producción para comprobarlo.
+- Metro entrega manifiestos SDK 57 de Android e iOS. La interacción en un teléfono físico, su impresión nativa y el flujo con las credenciales del responsable requieren aceptación de destino; no se afirma haberla realizado en un emulador.

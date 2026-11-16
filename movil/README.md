@@ -10,6 +10,10 @@ Aplicación nativa Android/iOS con **Expo SDK 57, React Native, Expo Router, Typ
 - Servidor configurado: `https://cortijo7.onrender.com`.
 - La API móvil ya está publicada en Render. El APK final y la evidencia de comprobaciones se registran en `../docs/APLICACION_MOVIL.md`. La creación de proyectos y compilación en Expo fue autorizada para la cuenta `fernando-hd`.
 
+## Instalar en Android
+
+[Descargar APK final](https://expo.dev/artifacts/eas/XTj_yCb-L8w91z6MZL4eok0GidkLzm2i9Ex5cgZUO_k.apk) o utiliza `../entrega/Cortijo7.apk`. La primera sesión utiliza tu usuario actual de Render y necesita internet. El instalador incluye el bundle y puede arrancar sin Metro.
+
 ## Ejecutar en Expo Go
 
 Requisitos: Node 24 LTS, npm, Expo Go compatible con SDK 57 y teléfono/computadora en la misma red.
@@ -71,9 +75,9 @@ C7 presenta resultados sobre la copia descargada y muestra su fecha. Las capacid
 `eas.json` contiene `preview` (APK de distribución interna) y `production` (AAB). El perfil no activa suscripciones de pago. El uso de EAS y su cuota dependen de la cuenta de Expo y requieren autorización para subir el código.
 
 ```sh
-npx eas-cli login
-npx eas-cli init --account <tu-cuenta>
-npx eas-cli build --platform android --profile preview
+npx eas-cli@latest login
+npx eas-cli@latest init --account <tu-cuenta>
+npx eas-cli@latest build --platform android --profile preview
 ```
 
 Para evitar subir fuentes del backend o archivos del equipo, se entrega `scripts/package_mobile.py`: produce un ZIP con **solo código móvil** mediante una lista explícita de archivos. Extrae ese paquete en una carpeta independiente, instala dependencias y ejecuta allí EAS con `EAS_NO_VCS=1`. No copies `.env`, bases, respaldos ni claves al paquete. Conserva en el original el `extra.eas.projectId` y el `owner` asignados por Expo.

@@ -25,3 +25,10 @@ Referencias oficiales: [dialecto psycopg de SQLAlchemy](https://docs.sqlalchemy.
 Los importes de venta utilizan NUMERIC(14,2). Las cantidades por porción se redondean a seis decimales con HALF_UP antes de multiplicar por el número de unidades; estimación y venta comparten la misma regla. Se bloquean conversiones entre dimensiones incompatibles y cantidades que redondeen a cero.
 
 La importación usa openpyxl/defusedxml con límites de lectura, contenido almacenado en PostgreSQL, validación previa y confirmación atómica. La conciliación compara cantidades, costos y pertenencia de ingrediente por lote/movimiento en REPEATABLE READ de solo lectura. Las sesiones incorporan la versión de autenticación del usuario; cambiar/restablecer contraseña revoca las anteriores. El healthcheck exige PostgreSQL 17 y revisión Alembic igual al head del código.
+
+
+## App nativa y sincronización — 16/11/2026
+
+`movil/` contiene React Native con Expo Go SDK 57, TypeScript y Expo Router. Se autentica por HTTPS contra `/api/mobile/v1` con las cuentas existentes y un token revocable por dispositivo. El teléfono guarda el token en SecureStore y su copia/cola en SQLite separado por usuario y servidor. El backend sigue siendo Flask/PostgreSQL 17.
+
+Las capturas offline son pendientes, no confirmaciones. Se envían en orden con UUID y cuerpo estables; los servicios existentes repiten la autorización, bloquean filas y confirman cada operación completa. Los conflictos se revisan explícitamente. Las ventas móviles congelan precios totales y versiones de receta; no se sobrescribe el stock desde la caché. C7 responde sobre los datos descargados mediante reglas y cálculos locales, sin una API de IA externa. El detalle y límites están en APLICACION_MOVIL.md.
