@@ -1,5 +1,7 @@
 # Cortijo 7 · Aplicación móvil
 
+**Actualización 1.1.0 preparada localmente; publicación del backend pendiente de acceso de escritura a GitHub.** El APK 1.0.0 enlazado abajo no contiene las funciones nuevas. Estado: [MOVIL_PARIDAD_1_1.md](../docs/MOVIL_PARIDAD_1_1.md).
+
 Aplicación nativa Android/iOS con **Expo SDK 57, React Native, Expo Router, TypeScript y SQLite local**. La fuente oficial de usuarios, permisos y operaciones sigue siendo **Flask + PostgreSQL 17 en Render**. SQLite solo almacena la copia del teléfono y su cola; no sustituye PostgreSQL ni sus pruebas de concurrencia.
 
 ## Ubicación y estado
@@ -12,7 +14,7 @@ Aplicación nativa Android/iOS con **Expo SDK 57, React Native, Expo Router, Typ
 
 ## Instalar en Android
 
-[Descargar APK final](https://expo.dev/artifacts/eas/XTj_yCb-L8w91z6MZL4eok0GidkLzm2i9Ex5cgZUO_k.apk) o utiliza `../entrega/Cortijo7.apk`. La primera sesión utiliza tu usuario actual de Render y necesita internet. El instalador incluye el bundle y puede arrancar sin Metro.
+[Descargar APK anterior 1.0.0](https://expo.dev/artifacts/eas/XTj_yCb-L8w91z6MZL4eok0GidkLzm2i9Ex5cgZUO_k.apk) o utiliza `../entrega/Cortijo7.apk`. La primera sesión utiliza tu usuario actual de Render y necesita internet. El instalador incluye el bundle y puede arrancar sin Metro.
 
 ## Ejecutar en Expo Go
 
