@@ -237,6 +237,16 @@ export function Workspace() {
             )
           }
           onHttpError={({ nativeEvent }) => {
+            if (
+              nativeEvent.statusCode === 404 &&
+              trustedWebUrl(nativeEvent.url) &&
+              new URL(nativeEvent.url).pathname === "/api/mobile/v1/web-session"
+            ) {
+              setError(
+                "El servidor todavía no tiene la actualización para abrir Sistema dentro de la app. Es necesario publicar el backend actualizado en Render. Tus datos y pendientes se conservan.",
+              );
+              return;
+            }
             if (nativeEvent.statusCode >= 500)
               setError(
                 "Render no pudo responder. Vuelve a intentar en un momento.",
