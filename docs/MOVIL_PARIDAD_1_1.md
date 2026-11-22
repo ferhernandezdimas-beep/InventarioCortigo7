@@ -31,10 +31,18 @@ Migración aditiva `f72101c7a002`, sucesora de `e81501c7a001`: crea exclusivamen
 
 ## Validación y entrega
 
-Se ejecutan pruebas del servidor sobre PostgreSQL 17 real, con esquemas aislados; pruebas TypeScript de instrucciones guiadas y persistencia/reintentos offline; formato, tipado y exportación de bundles Android/iOS. **195 pruebas Python aprobadas**, **15 pruebas móviles aprobadas**, formato y tipado correctos, bundles Android/iOS exportados, **21/21 comprobaciones Expo** y auditoría npm sin vulnerabilidades. La instalación limpia de dependencias del paquete de entrega también pasó.
+Se ejecutan pruebas del servidor sobre PostgreSQL 17 real, con esquemas aislados; pruebas TypeScript de instrucciones guiadas y persistencia/reintentos offline; formato, tipado y exportación de bundles Android/iOS. GitHub Actions del commit desplegado: [completado correctamente](https://github.com/ferhernandezdimas-beep/InventarioCortigo7/actions/runs/44994909856).
 
-APK 1.1.0 en compilación: https://expo.dev/accounts/fernando-hd/projects/cortijo7-movil/builds/cb88f90a-ee85-4c85-8cc0-d3cea27c70e8.
+**195 pruebas Python aprobadas**, **15 pruebas móviles aprobadas**, formato y tipado correctos, bundles Android/iOS exportados, **21/21 comprobaciones Expo** y auditoría npm sin vulnerabilidades. La instalación limpia de dependencias del paquete de entrega también pasó.
 
-Publicación pendiente: GitHub devuelve 403 para la cuenta local Fernando-HD. Se necesita habilitar y aceptar acceso de escritura al repositorio autorizado. El código local nuevo no debe confundirse con el backend actualmente publicado. La versión anterior del APK permanece disponible hasta terminar la nueva compilación.
+APK 1.1.0 terminado: https://expo.dev/accounts/fernando-hd/projects/cortijo7-movil/builds/cb88f90a-ee85-4c85-8cc0-d3cea27c70e8.
+
+Publicación completada el 22/11/2026, 00:43, hora de Ciudad de México. Commit de aplicación `d61ac4184308811f816cc5d8b8b46a42e5852d24`, despliegue Render `dep-dc18tn9ksfps7387g6hg`, estado `live`. Salud `/health/ready`: 200. Los POST a `/api/mobile/v1/web-session`, `/actions` y `/documents` sin credenciales devuelven 401 JSON, ya no 404. La salud valida PostgreSQL 17 y la revisión de Alembic vigente. No se exportaron datos remotos, no se abrió la allowlist y no se crearon movimientos operativos para verificar.
+
+APK 1.1.0 (versionCode 2): [descargar instalador](https://expo.dev/artifacts/eas/Syh_kt_JK7av0wzmeJ6X8USrrW6nG0T5J6yH11N-p_o.apk?download=1). Copias locales `entrega/Cortijo7-1.1.0.apk` y `entrega/Cortijo7.apk`. ZIP íntegro, bundle incluido y bloque de firma APK v2/v3 presente. Tamaño: 100,793,202 bytes. SHA-256: `b43bde3f2d14dc0c30022566d1f0aad7444297534e7ea7bb3679507c78bf6473`. La versión anterior se conserva como `Cortijo7-1.0.0.apk`.
+
+El cambio posterior que explica amigablemente un 404 está en las fuentes actualizadas; el APK 1.1.0 contiene las funciones de Sistema y C7 compiladas antes de ese mensaje. Con el backend actualizado, el 404 de arranque está resuelto sin reinstalar la versión 1.1.0.
+
+Si la app quedó en el error anterior, cerrarla completamente y abrirla otra vez; entrar a Sistema con la sesión vigente. Si solicita acceso, utilizar la misma cuenta de la web. No borrar datos ni desinstalar si hay capturas pendientes.
 
 No hay emuladores ni teléfonos conectados para certificar interacción nativa. Antes del uso operativo: comprobar acceso de cada rol, alta C7, resultado visible en web, descarga CSV/Excel, importación, impresión, modo avión, cierre/reapertura, reconexión, resultados inciertos y revocación de dispositivo.
