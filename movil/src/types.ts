@@ -47,6 +47,8 @@ export type Sale = {
   items: { name: string; quantity: number; unit_price: string }[];
 };
 export type Snapshot = {
+  categories?: { id: number; name: string }[];
+  units?: { id: number; name: string; symbol: string }[];
   schema_version: number;
   server_time: string;
   user: User;
@@ -94,7 +96,16 @@ export type SaleCommand = {
   expected_total: string;
   expected_recipes: Record<string, number>;
 };
-export type Command = InventoryCommand | SaleCommand;
+export type CatalogCommand = {
+  key: string;
+  kind:
+    | "catalog.ingredient.create"
+    | "catalog.category.create"
+    | "catalog.supplier.create"
+    | "catalog.presentation.create";
+  data: Record<string, string | number | boolean | null>;
+};
+export type Command = InventoryCommand | SaleCommand | CatalogCommand;
 export type QueueItem = {
   key: string;
   command: Command;

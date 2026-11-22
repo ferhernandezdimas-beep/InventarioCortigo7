@@ -1,8 +1,10 @@
 """Revocable device sessions. Only token digests are stored in PostgreSQL."""
 
+import uuid
 from datetime import datetime
 
 from sqlalchemy import CheckConstraint, DateTime, ForeignKey
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.extensions import db
@@ -19,3 +21,13 @@ class MobileSession(db.Model):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
     revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class MobileAction(db.Model):
+    __tablename__ = "mobile_actions"
+    key: Mapped[uuid.UUID] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="RESTRICT"), index=True)
+    kind: Mapped[str] = mapped_column(db.String(50))
+    payload_hash: Mapped[str] = mapped_column(db.String(64))
+    result: Mapped[dict] = mapped_column(JSONB)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)

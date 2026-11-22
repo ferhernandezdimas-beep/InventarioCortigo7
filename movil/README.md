@@ -41,8 +41,9 @@ Copia `.env.example` a `.env` y cambia **solo** `EXPO_PUBLIC_API_URL`. La URL es
 - Salidas con varios ingredientes y validación final PEPS en PostgreSQL.
 - POS con carrito, importes decimales exactos, efectivo/tarjeta/transferencia registrados internamente.
 - Cola durable con referencia UUID, estado, errores y folio definitivo.
-- **Asistente C7**: consultas por ingrediente, reposición, caducidades, porciones posibles, ventas recientes y pendientes. Usa reglas y cálculos locales; funciona sin internet, sin proveedor de IA externo ni claves adicionales. No ejecuta cambios desde el chat.
-- Cuenta, vencimiento del acceso y enlace a la web para administración, catálogos, recetas, importaciones, ajustes y reportes.
+- **Asistente C7**: consultas por ingrediente, reposición, caducidades, porciones posibles, ventas recientes y pendientes. Usa reglas y cálculos locales; funciona sin internet, sin proveedor de IA externo ni claves adicionales. Prepara altas de ingredientes, categorías, proveedores y presentaciones con formulario, revisión y confirmación. Las acciones se encolan sin conexión y el servidor valida permisos e integridad antes de confirmarlas.
+- **Sistema**: web completa integrada dentro de la app con la misma cuenta y rol: usuarios, catálogos, recetas, importaciones, ventas, cancelaciones, ajustes, reportes y auditoría según permisos. Exportaciones CSV/Excel con menú nativo para compartir e impresión de tickets. Requiere internet.
+- Cuenta, vencimiento del acceso y revocación por dispositivo.
 - En la web: **Mis dispositivos móviles**, con revocación de accesos. Un administrador puede revisar los dispositivos de otros usuarios.
 
 La app no reproduce todos los formularios administrativos de la web. El trabajo móvil se concentra en consulta, recepción, salidas, venta y sincronización.
@@ -98,3 +99,9 @@ En la raíz, ejecutar `bash scripts/test.sh -q -W error` sobre PostgreSQL 17 rea
 La compilación del bundle y las pruebas no sustituyen la aceptación en un teléfono. Antes de usarlo en operación: hacer el primer acceso, activar modo avión, capturar y cerrar/reabrir, recuperar conexión, verificar folio en la web, provocar falta de stock con dos dispositivos y comprobar la revocación. Usar un entorno de validación para estas operaciones.
 
 Referencias: [SQLite de Expo](https://docs.expo.dev/versions/latest/sdk/sqlite/), [SecureStore](https://docs.expo.dev/versions/latest/sdk/securestore/), [compilar APK](https://docs.expo.dev/build-reference/apk/), [Expo Go](https://expo.dev/go).
+
+## Versión 1.1.0: integración completa y C7 con acciones
+
+El acceso completo es híbrido: las pantallas web reales se muestran en un WebView dentro de la aplicación; los módulos nativos conservan SQLite y la cola offline. No todos los formularios administrativos funcionan sin internet. El alta guiada del catálogo tampoco se considera confirmada hasta que Render responde.
+
+Requiere desplegar el backend y ejecutar `flask db upgrade`, incluida la migración aditiva `f72101c7a002`. No requiere borrar, importar ni exportar datos existentes. Las cuentas actuales continúan vigentes. Estado de publicación y aceptación: `../docs/MOVIL_PARIDAD_1_1.md`.

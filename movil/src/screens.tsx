@@ -1,9 +1,11 @@
+import { ActionEditor } from "./action-editor";
+import { planAction, type Plan } from "./assistant-actions";
+import { navigate } from "./navigation";
 import React, { useMemo, useRef, useState } from "react";
 import {
   Alert,
   FlatList,
   KeyboardAvoidingView,
-  Linking,
   Platform,
   Pressable,
   RefreshControl,
@@ -45,9 +47,9 @@ import {
   Title,
 } from "./ui";
 import type { Ingredient, QueueItem } from "./types";
-import { SERVER } from "./api";
 
 export type Route =
+  | "workspace"
   | "home"
   | "inventory"
   | "pos"
@@ -867,9 +869,27 @@ export function Assistant({ go }: { go: Go }) {
       actionLabel?: string;
     }[]
   >([{ id: "hello", ...assistant("hola", data, app.queue), own: false }]);
+  const [plan, setPlan] = useState<Plan | null>(null);
   const scroll = useRef<React.ElementRef<typeof ScrollView>>(null);
   function send(text = input) {
     if (!text.trim()) return;
+    const proposed = planAction(text, data);
+    if (proposed) {
+      setInput("");
+      if (!data.user.permissions.includes("catalog.write")) {
+        setMessages((current) => [
+          ...current,
+          {
+            id: newKey(),
+            text: "Tu rol no permite crear registros del catálogo. El asistente respeta los mismos permisos de la web.",
+            own: false,
+          },
+        ]);
+        return;
+      }
+      setPlan(proposed);
+      return;
+    }
     const result = assistant(text.trim(), data, app.queue);
     setMessages((current) => [
       ...current.slice(-39),
@@ -923,6 +943,18 @@ export function Assistant({ go }: { go: Go }) {
             <Chip key={p} label={p} onPress={() => send(p)} />
           ))}
         </View>
+        {data.user.permissions.includes("catalog.write") && (
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+            {[
+              "Crear ingrediente",
+              "Crear proveedor",
+              "Crear categoría",
+              "Crear presentación",
+            ].map((label) => (
+              <Chip key={label} label={label} onPress={() => send(label)} />
+            ))}
+          </View>
+        )}
         {messages.map((m) => (
           <View
             key={m.id}
@@ -958,7 +990,8 @@ export function Assistant({ go }: { go: Go }) {
         ))}
         <Text style={s.tiny}>
           Asistente de reglas y cálculos locales; no envía tus consultas a
-          servicios externos ni ejecuta cambios desde el chat.
+          servicios externos. Las acciones se revisan antes de guardarse y se
+          confirman al sincronizar.
         </Text>
       </ScrollView>
       <View
@@ -993,6 +1026,7 @@ export function Assistant({ go }: { go: Go }) {
           <Icon name="arrow-up" color={C.white} />
         </Pressable>
       </View>
+      {plan && <ActionEditor plan={plan} onClose={() => setPlan(null)} />}
     </KeyboardAvoidingView>
   );
 }
@@ -1185,19 +1219,16 @@ export function Account() {
       <Card>
         <Text style={s.h2}>El resto de tu operación</Text>
         <Text style={s.muted}>
-          La web concentra administración de usuarios, edición de catálogos y
-          recetas, importación Excel, cancelaciones, ajustes, reportes y
-          respaldos. Los datos confirmados desde esta app aparecen en la misma
-          base.
+          Sistema incorpora administración de usuarios, edición de catálogos y
+          recetas, importación Excel, cancelaciones, ajustes y reportes. Los
+          datos confirmados desde esta app aparecen en la misma base.
         </Text>
         <Button
-          title="Abrir Cortijo 7 web"
+          title="Abrir sistema completo"
           secondary
           icon="open-outline"
           onPress={() => {
-            Linking.openURL(SERVER).catch(() =>
-              Alert.alert("Abre tu navegador", SERVER),
-            );
+            navigate("workspace");
           }}
         />
       </Card>

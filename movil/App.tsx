@@ -88,6 +88,7 @@ export function Frame({ children }: { children: React.ReactNode }) {
   const permissions = app.session.user.permissions;
   const tabs: { route: Route; label: string; icon: IconName }[] = [
     { route: "home", label: "Inicio", icon: "grid-outline" },
+    { route: "workspace", label: "Sistema", icon: "apps-outline" },
     ...(permissions.includes("inventory.read")
       ? [
           {

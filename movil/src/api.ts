@@ -63,10 +63,13 @@ export const signIn = (email: string, password: string, device_name: string) =>
 export const download = (token: string) =>
   request<Snapshot>("/snapshot", token);
 export async function upload(token: string, command: Command, recover = false) {
+  const endpoint = command.kind.startsWith("catalog.")
+    ? "/actions"
+    : "/operations";
   if (recover) {
     try {
       return await request<{ id: string; key: string; status: "confirmed" }>(
-        "/operations/" + command.key,
+        endpoint + "/" + command.key,
         token,
       );
     } catch (error) {
@@ -74,7 +77,7 @@ export async function upload(token: string, command: Command, recover = false) {
     }
   }
   return request<{ id: string; key: string; status: "confirmed" }>(
-    "/operations",
+    endpoint,
     token,
     command,
   );

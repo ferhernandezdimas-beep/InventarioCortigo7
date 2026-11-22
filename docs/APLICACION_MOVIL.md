@@ -1,4 +1,6 @@
-# Aplicación móvil Cortijo 7 — elaboración 15–16/11/2026
+# Aplicación móvil Cortijo 7 — elaboración 15–21/11/2026
+
+Actualización 1.1.0: consultar [alcance, pruebas y estado de publicación](MOVIL_PARIDAD_1_1.md). Los identificadores de despliegue y APK de las secciones históricas siguientes corresponden a la versión 1.0.0.
 
 ## Entregables locales
 
@@ -7,7 +9,7 @@
 - Nueva tabla `mobile_sessions` mediante Alembic `e81501c7a001`, posterior a `d457194c1424`; cambio aditivo sin modificar tablas históricas.
 - La web conserva sus rutas y formularios. Se añade `/mi-cuenta/dispositivos` para consultar/revocar accesos; mantiene CSRF. Los administradores pueden gestionar los dispositivos de todos.
 - Inicio, inventario filtrable, lotes PEPS, recepciones de varios renglones y presentaciones, salidas, carrito POS, estados y folios de sincronización, cuenta y C7.
-- C7 usa cálculos/reglas locales: no es un modelo generativo ni depende de un proveedor de IA. No modifica datos desde el chat. Ofrece reposición según mínimos/máximos, lotes a revisar, capacidades de recetas independientes, consultas por ingrediente y ventas recientes según permisos.
+- C7 usa cálculos/reglas locales: no es un modelo generativo ni depende de un proveedor de IA. La versión 1.1.0 prepara altas de catálogo con formulario, revisión y confirmación, sujetas a permisos y validación del servidor. Ofrece reposición según mínimos/máximos, lotes a revisar, capacidades de recetas independientes, consultas por ingrediente y ventas recientes según permisos.
 - `Iniciar Cortijo 7 móvil.command`, `movil/eas.json`, documentación y `scripts/package_mobile.py` para entregar únicamente código móvil, con SHA-256.
 
 ## Arquitectura de sincronización
@@ -34,7 +36,7 @@ La sesión local caduca como máximo en siete días. Un dispositivo físicamente
 
 No se deben desinstalar ni borrar datos con pendientes. Cerrar sesión exige internet, revoca el token y limpia la copia local; no permite abandonar operaciones sin resolver. El modo offline se diseñó para una app instalada con el bundle incluido; la caché de Expo Go no garantiza el arranque offline independiente de Metro.
 
-La administración completa de catálogos, recetas y usuarios, importaciones, cancelaciones, ajustes y reportes continúa en la web. Hay un acceso directo desde la app. No se trasladaron todos esos formularios a React Native ni se añadieron integraciones bancarias.
+Desde la versión 1.1.0, la pestaña Sistema incorpora la web completa dentro de un WebView autenticado, conservando todos los formularios y permisos existentes. Administración, importaciones, cancelaciones, ajustes y reportes requieren internet. Los módulos nativos mantienen sus capturas offline. C7 añade cuatro altas de catálogo guiadas con revisión, confirmación e idempotencia; no utiliza IA generativa. El estado de publicación de esta actualización está en MOVIL_PARIDAD_1_1.md.
 
 ## Instalación y distribución
 

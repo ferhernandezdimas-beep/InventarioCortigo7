@@ -3,7 +3,7 @@ from decimal import Decimal
 from zoneinfo import ZoneInfo
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, session
 from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 from sqlalchemy import select, text
@@ -36,6 +36,7 @@ def create_app(overrides=None):
         imports,
         inventory,
         mobile,
+        mobile_actions,
         pos,
         recipes,
         reports,
@@ -51,6 +52,7 @@ def create_app(overrides=None):
         catalog,
         inventory,
         mobile,
+        mobile_actions,
         admin,
         recipes,
         pos,
@@ -68,6 +70,19 @@ def create_app(overrides=None):
         identity, version = user_id.split(":", 1)
         if not identity.isdigit() or not version.isdigit():
             return None
+        if session.get("mobile_device"):
+            from app.mobile_models import MobileSession
+            from app.models import utcnow
+
+            device = db.session.get(MobileSession, session["mobile_device"])
+            if (
+                not device
+                or device.user_id != int(identity)
+                or device.auth_version != int(version)
+                or device.revoked_at
+                or device.expires_at <= utcnow()
+            ):
+                return None
         return db.session.scalar(
             select(User).where(
                 User.id == int(identity), User.auth_version == int(version), User.active.is_(True)
@@ -83,6 +98,10 @@ def create_app(overrides=None):
             now=now,
             today=now.date(),
             audit_labels={
+                "assistant.catalog.ingredient.create": "Ingrediente creado desde C7",
+                "assistant.catalog.category.create": "Categoría creada desde C7",
+                "assistant.catalog.supplier.create": "Proveedor creado desde C7",
+                "assistant.catalog.presentation.create": "Presentación creada desde C7",
                 "demo.v1.started": "Carga inicial iniciada",
                 "demo.v1.completed": "Carga inicial completada",
                 "dataset.presentation.v1": "Actualización de presentación del catálogo",

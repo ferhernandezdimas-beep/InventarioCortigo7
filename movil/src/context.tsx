@@ -209,8 +209,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       Date.now() >= Date.parse(current.expires_at)
     )
       throw new Error("Vuelve a iniciar sesión antes de capturar.");
-    const permission =
-      command.kind === "sale" ? "sales.write" : "inventory.write";
+    const permission = command.kind.startsWith("catalog.")
+      ? "catalog.write"
+      : command.kind === "sale"
+        ? "sales.write"
+        : "inventory.write";
     if (!current.user.permissions.includes(permission))
       throw new Error("Tu cuenta no tiene permiso para esta operación.");
     const item: QueueItem = {

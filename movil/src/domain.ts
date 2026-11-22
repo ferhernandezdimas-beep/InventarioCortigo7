@@ -36,6 +36,10 @@ export const kindLabel = (kind: string) =>
     receipt_reversal: "Reversión de entrada",
     reversal: "Reversión",
     opening: "Apertura",
+    "catalog.ingredient.create": "Alta de ingrediente",
+    "catalog.category.create": "Alta de categoría",
+    "catalog.supplier.create": "Alta de proveedor",
+    "catalog.presentation.create": "Alta de presentación",
   })[kind] || kind;
 export function decimalInput(
   value: string,
@@ -266,6 +270,6 @@ export function assistant(
     };
   }
   return {
-    text: `Soy C7, tu asistente de operación. Analizo los datos que ya descargaste y funciono sin internet. ${rows.length ? "Puedes preguntarme por un ingrediente, qué comprar, qué caduca o qué puedes preparar." : "Con tu permiso de caja puedo ayudarte con ventas y sincronización."}\n\nTambién te explico tus pendientes. No modifico inventario ni genero operaciones desde el chat.`,
+    text: `Soy C7, tu asistente de operación. Analizo los datos que ya descargaste y funciono sin internet. ${rows.length ? "Puedes preguntarme por un ingrediente, qué comprar, qué caduca o qué puedes preparar." : "Con tu permiso de caja puedo ayudarte con ventas y sincronización."}\n\nTambién te explico tus pendientes. También puedo preparar altas de ingredientes, categorías, proveedores y presentaciones si tu rol lo permite. Usa los botones de acciones y revisa los datos antes de guardarlos.`,
   };
 }

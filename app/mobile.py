@@ -10,7 +10,8 @@ import uuid
 from datetime import date, timedelta
 from functools import wraps
 
-from flask import Blueprint, g, jsonify, request
+from flask import Blueprint, g, jsonify, redirect, request, session
+from flask_login import login_user
 from sqlalchemy import select, text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
@@ -21,7 +22,17 @@ from app.auth import DUMMY_HASH, allow_attempt
 from app.commerce_models import MenuItem, RecipeVersion, Sale
 from app.extensions import csrf, db
 from app.mobile_models import MobileSession
-from app.models import AuditLog, Lot, Operation, Presentation, Supplier, User, utcnow
+from app.models import (
+    AuditLog,
+    Category,
+    Lot,
+    Operation,
+    Presentation,
+    Supplier,
+    Unit,
+    User,
+    utcnow,
+)
 from app.permissions import PERMISSIONS, ROLES
 from app.services.inventory import ConcurrencyError, issue, receive
 from app.services.numbers import DomainError, decimal_value
@@ -95,6 +106,9 @@ def authenticated(permission=None):
         @wraps(fn)
         def wrapped(*args, **kwargs):
             authorization = request.headers.get("Authorization", "")
+            if not authorization and request.endpoint == "mobile.web_session":
+                token = request.form.get("access_token", "")
+                authorization = "Bearer " + token if token else ""
             if not authorization.startswith("Bearer ") or len(authorization) > 256:
                 return failure("Inicia sesión con tu cuenta del restaurante.", "unauthorized", 401)
             digest = hashlib.sha256(authorization[7:].encode()).hexdigest()
@@ -171,6 +185,18 @@ def me():
     return jsonify(user=profile(g.mobile_user), expires_at=g.mobile_session.expires_at.isoformat())
 
 
+@bp.post("/web-session")
+@authenticated()
+def web_session():
+    """Native POST bootstrap: no tokens in URLs, HTML or JavaScript injection."""
+    actor, device = g.mobile_user, g.mobile_session
+    session.clear()
+    login_user(actor)
+    session.permanent = True
+    session["mobile_device"] = device.token_hash
+    return redirect("/", code=303)
+
+
 @bp.post("/auth/logout")
 @authenticated()
 def logout():
@@ -198,7 +224,18 @@ def snapshot(session, user):
         products=[],
         operations=[],
         sales=[],
+        categories=[],
+        units=[],
     )
+    if "catalog.read" in permissions:
+        result["categories"] = [
+            dict(id=c.id, name=c.name)
+            for c in session.scalars(select(Category).order_by(Category.name))
+        ]
+        result["units"] = [
+            dict(id=u.id, name=u.name, symbol=u.symbol)
+            for u in session.scalars(select(Unit).order_by(Unit.id))
+        ]
     if "inventory.read" in permissions:
         for row in session.execute(inventory_query().order_by(text("ingredients.name"))):
             item = row.Ingredient
