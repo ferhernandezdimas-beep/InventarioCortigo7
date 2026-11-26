@@ -8,6 +8,10 @@ Entrega para **uso local** con Python 3.12, Flask, PostgreSQL 17, SQLAlchemy 2, 
 
 El servicio y PostgreSQL utilizan el plan gratuito. La base actual vence el **12/12/2026 a las 21:47 (Ciudad de México)**; respaldar y actualizar de plan o trasladar antes de esa fecha. El primer acceso puede tardar después de un periodo de inactividad.
 
+## Paquete de instalación local
+
+Consulta [LEEME_LOCAL.md](LEEME_LOCAL.md) para instalar desde el ZIP en Windows o Mac, generar la configuración privada y crear tu administrador. El paquete no incluye cuentas ni datos de Render. [Verificación del paquete](docs/PAQUETE_LOCAL.md).
+
 ## Abrir el sistema local
 
 Con Docker Desktop abierto:

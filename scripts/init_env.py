@@ -8,6 +8,10 @@ target = root / ".env"
 if target.exists():
     raise SystemExit("Ya existe .env; se conserva sin cambios.")
 data = (root / ".env.example").read_text()
+data = data.replace(
+    "COMPOSE_PROJECT_NAME=\n",
+    "COMPOSE_PROJECT_NAME=cortijo7_" + secrets.token_hex(5) + "\n",
+)
 data = data.replace("SECRET_KEY=\n", "SECRET_KEY=" + secrets.token_hex(32) + "\n")
 data = data.replace("POSTGRES_PASSWORD=\n", "POSTGRES_PASSWORD=" + secrets.token_urlsafe(32) + "\n")
 # Exclusive creation avoids a concurrent invocation replacing an existing file.
