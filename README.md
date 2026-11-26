@@ -85,4 +85,4 @@ Para iniciar de forma independiente sin Metro se necesita una compilación insta
 
 ## Aplicación de escritorio
 
-Proyecto independiente en [escritorio/](escritorio/README.md), para Windows y macOS. Utiliza Render con los mismos usuarios, roles y funciones web; incorpora impresión, PDF, importaciones y descargas. Requiere internet. Instaladores y fuentes de entrega en `entrega/escritorio/`. En Mac puede iniciarse también con `Iniciar Cortijo 7 escritorio.command`.
+Proyecto independiente en [escritorio/](escritorio/README.md), para Windows y macOS. Utiliza Render con los mismos usuarios, roles y funciones web; incorpora impresión, PDF, importaciones y descargas. Requiere internet. Instaladores y fuentes de entrega en `entrega/escritorio/`; [descarga Windows/Mac](https://github.com/ferhernandezdimas-beep/InventarioCortigo7/releases/tag/escritorio-v1.0.0) y [evidencia de entrega](docs/ESCRITORIO_ENTREGA.md). En Mac puede iniciarse también con `Iniciar Cortijo 7 escritorio.command`.
