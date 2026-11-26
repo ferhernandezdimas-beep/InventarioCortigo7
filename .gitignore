@@ -25,3 +25,5 @@ movil/android/
 movil/ios/
 *.apk
 *.aab
+
+escritorio/dist/

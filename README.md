@@ -82,3 +82,7 @@ La carpeta [`movil/`](movil/README.md) contiene la app Android/iOS de Cortijo 7 
 El backend incorpora la API `/api/mobile/v1` y una migración aditiva para sesiones revocables por dispositivo. El primer acceso requiere internet; después se puede consultar y capturar offline. Las operaciones se confirman en PostgreSQL al sincronizar, aplicando PEPS, permisos e idempotencia. SQLite se utiliza únicamente como caché y cola del teléfono.
 
 Para iniciar de forma independiente sin Metro se necesita una compilación instalada (APK en Android); Expo Go es un entorno de desarrollo. La cuenta Expo, la compilación remota y la actualización de Render se documentan por separado; véase [`docs/APLICACION_MOVIL.md`](docs/APLICACION_MOVIL.md) para el estado de esta entrega y [`movil/README.md`](movil/README.md) para instalación y límites de sincronización.
+
+## Aplicación de escritorio
+
+Proyecto independiente en [escritorio/](escritorio/README.md), para Windows y macOS. Utiliza Render con los mismos usuarios, roles y funciones web; incorpora impresión, PDF, importaciones y descargas. Requiere internet. Instaladores y fuentes de entrega en `entrega/escritorio/`. En Mac puede iniciarse también con `Iniciar Cortijo 7 escritorio.command`.

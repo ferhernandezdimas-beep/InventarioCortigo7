@@ -1,0 +1,74 @@
+{
+  "name": "cortijo7-escritorio",
+  "version": "1.0.0",
+  "description": "Cortijo 7 para Windows y macOS, conectado al sistema integral en Render",
+  "author": "Cortijo 7",
+  "private": true,
+  "main": "src/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/*.test.cjs",
+    "check": "node --check src/main.cjs && node --check src/preload.cjs && node --check src/shell.js && npm test",
+    "build:mac": "electron-builder --mac dmg --arm64 --x64 --publish never",
+    "build:win": "electron-builder --win nsis --x64 --publish never",
+    "build:win:portable": "electron-builder --win zip --x64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "45.5.0",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "mx.cortijo7.escritorio",
+    "productName": "Cortijo 7",
+    "artifactName": "Cortijo7-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "src/**",
+      "assets/icon.png",
+      "package.json"
+    ],
+    "asar": true,
+    "mac": {
+      "category": "public.app-category.business",
+      "icon": "assets/icon.png",
+      "hardenedRuntime": true,
+      "identity": "-",
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist"
+    },
+    "dmg": {
+      "title": "Cortijo 7",
+      "contents": [
+        {
+          "x": 140,
+          "y": 180
+        },
+        {
+          "x": 420,
+          "y": 180,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": "nsis",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "deleteAppDataOnUninstall": false
+    }
+  },
+  "overrides": {
+    "minimatch@9": "^11.0.1",
+    "minimatch@10": "^11.0.1"
+  }
+}
